@@ -1,0 +1,20 @@
+# Gradle / build outputs
+.gradle/
+build/
+out/
+
+# Kotlin compiler caches
+.kotlin/
+
+# IDEs
+.idea/
+*.iml
+
+# VCS
+.git/
+.gitignore
+
+# OS junk
+Thumbs.db
+Desktop.ini
+
