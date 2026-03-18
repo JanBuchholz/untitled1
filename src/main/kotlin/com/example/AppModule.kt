@@ -29,6 +29,7 @@ import com.example.common.HealthResponse
 import com.example.common.HelloResponse
 import com.example.items.itemsRoutes
 import com.example.posts.postsRoutes
+import com.example.topics.topicsRoutes
 
 
 //*******************************************************************************************
@@ -94,5 +95,6 @@ fun Application.module() {
         //------------------------------------------------------------------------
         itemsRoutes()
         postsRoutes(httpClient)
+        topicsRoutes()
     }
 }
