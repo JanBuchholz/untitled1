@@ -15,6 +15,10 @@ class ItemStore {
         return items.values.sortedBy { it.id }
     }
 
+    fun get(id: Int): Item? {
+        return items[id]
+    }
+
     fun create(name: String): Item {
         val id = nextId.incrementAndGet()
         val item = Item(id = id, name = name)

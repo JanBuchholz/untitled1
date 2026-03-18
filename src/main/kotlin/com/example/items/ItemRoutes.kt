@@ -24,6 +24,22 @@ fun Route.itemsRoutes() {
             call.respond(store.all())
         }
 
+        get("/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, ErrorResponse(message = "Invalid id"))
+                return@get
+            }
+
+            val item = store.get(id)
+            if (item == null) {
+                call.respond(HttpStatusCode.NotFound, ErrorResponse(message = "Item not found"))
+                return@get
+            }
+
+            call.respond(item)
+        }
+
         post {
             val req = call.receive<CreateItemRequest>()
             val created = store.create(req.name)
