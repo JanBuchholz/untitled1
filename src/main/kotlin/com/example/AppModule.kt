@@ -73,7 +73,7 @@ fun Application.module() {
         //- General endpoints
         //------------------------------------------------------------------------
         get("/") {
-            call.respondText("Hello from Ktor", ContentType.Text.Plain)
+            call.respondText("Moin!! Hier mal nen Kotlin Ktor Server von CT-A in Codespaces. Probier mal /items oder /posts", ContentType.Text.Plain)
         }
 
         get("/health") {
