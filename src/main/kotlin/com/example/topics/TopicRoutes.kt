@@ -39,16 +39,13 @@ fun Route.topicsRoutes() {
         }
 
         post {
-            val topics = call.receive<List<Topic>>()
+            val topic = call.receive<Topic>()
             
-            // Write received topics to console
-            println("Received topics:")
-            topics.forEach { topic ->
-                println("  - ID: ${topic.id}, Topic: ${topic.topic}")
-            }
+            // Write received topic to console
+            println("Received topic: ID: ${topic.id}, Topic: ${topic.topic}")
             
-            store.addAll(topics)
-            call.respond(HttpStatusCode.Created, topics)
+            store.add(topic)
+            call.respond(HttpStatusCode.Created, topic)
         }
     }
 }

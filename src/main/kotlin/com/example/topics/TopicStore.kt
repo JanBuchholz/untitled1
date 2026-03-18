@@ -9,6 +9,10 @@ import java.util.concurrent.ConcurrentHashMap
 class TopicStore {
     private val topics = ConcurrentHashMap<Int, Topic>()
 
+    fun add(topic: Topic) {
+        topics[topic.id] = topic
+    }
+
     fun addAll(topicList: List<Topic>) {
         topicList.forEach { topic ->
             topics[topic.id] = topic

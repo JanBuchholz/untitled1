@@ -2,6 +2,7 @@ package com.example
 
 import com.example.common.HealthResponse
 import com.example.items.Item
+import com.example.topics.Topic
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -30,7 +31,10 @@ class MainTest {
 
         val response = client.get("/")
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals("Hello from Ktor", response.bodyAsText())
+        assertEquals(
+            "Moin!! Hier mal nen Kotlin Ktor Server von CT-A in Codespaces. Probier mal /items oder /posts",
+            response.bodyAsText(),
+        )
     }
 
     @Test
@@ -100,5 +104,34 @@ class MainTest {
 
         val deletedAgainResp = client.delete("/items/${created.id}")
         assertEquals(HttpStatusCode.NotFound, deletedAgainResp.status)
+    }
+
+    @Test
+    fun topics_post_accepts_object() = testApplication {
+        application {
+            module()
+        }
+
+        val emptyListResp = client.get("/topics")
+        assertEquals(HttpStatusCode.OK, emptyListResp.status)
+        val emptyList =
+            json.decodeFromString(ListSerializer(Topic.serializer()), emptyListResp.bodyAsText())
+        assertTrue(emptyList.isEmpty())
+
+        val createdResp =
+            client.post("/topics") {
+                headers { append(HttpHeaders.ContentType, ContentType.Application.Json.toString()) }
+                setBody("""{"id":1,"topic":"kotlin"}""")
+            }
+        assertEquals(HttpStatusCode.Created, createdResp.status)
+        val created = json.decodeFromString(Topic.serializer(), createdResp.bodyAsText())
+        assertEquals(1, created.id)
+        assertEquals("kotlin", created.topic)
+
+        val afterCreateListResp = client.get("/topics")
+        assertEquals(HttpStatusCode.OK, afterCreateListResp.status)
+        val afterCreateList =
+            json.decodeFromString(ListSerializer(Topic.serializer()), afterCreateListResp.bodyAsText())
+        assertEquals(listOf(created), afterCreateList)
     }
 }
